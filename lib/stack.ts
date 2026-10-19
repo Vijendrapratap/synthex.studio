@@ -9,6 +9,8 @@ export type Tool = {
   hue: number; // per-tool accent, oklch hue
   line: string;
   sample: string[]; // fake terminal output shown on the card
+  features: [string, string][]; // draft copy: confirm against the real tool
+  pairs: string[]; // tools it chains with best
 };
 
 export const TOOLS = {
@@ -19,6 +21,12 @@ export const TOOLS = {
     hue: 85,
     line: "Research, write and schedule a month of posts in one afternoon.",
     sample: ["researching 42 trending topics", "drafted 30 posts · 4 channels", "scheduled · next post Tue 9:00"],
+    features: [
+      ["Research", "Pulls trending topics, competitor posts and your sentiment data before writing a word."],
+      ["Write", "Drafts in your brand voice from your brand kit, with every claim tied to its source."],
+      ["Schedule", "Queues posts to LinkedIn, X, Instagram and Facebook at the times your audience is online."],
+    ],
+    pairs: ["seo", "sentiment"],
   },
   competitor: {
     name: "Competitor Research",
@@ -27,6 +35,12 @@ export const TOOLS = {
     hue: 25,
     line: "Know what your rivals ship, price and post before they do.",
     sample: ["tracking 6 competitors", "3 new pricing pages detected", "weekly brief ready"],
+    features: [
+      ["Track", "Watches rivals' pricing pages, launches, ads, socials and job posts."],
+      ["Diff", "Shows exactly what changed, with the date and a source link."],
+      ["Brief", "A weekly summary of what it means for you and what to do next."],
+    ],
+    pairs: ["ads", "content-os"],
   },
   sentiment: {
     name: "Market Sentiment",
@@ -35,6 +49,12 @@ export const TOOLS = {
     hue: 300,
     line: "Hear what the market says about you across reviews, Reddit and socials.",
     sample: ["12,480 mentions scanned", "sentiment +8% this week", "top complaint: shipping time"],
+    features: [
+      ["Listen", "Reviews, Reddit, X, comments and support tickets in one feed."],
+      ["Score", "Every mention scored and grouped into themes you can act on."],
+      ["Alert", "Get pinged when sentiment dips or a complaint starts trending."],
+    ],
+    pairs: ["content-os", "competitor"],
   },
   ads: {
     name: "Ads Harness",
@@ -43,6 +63,12 @@ export const TOOLS = {
     hue: 200,
     line: "Generate ad variants, launch them and see which ones actually convert.",
     sample: ["24 ad variants generated", "meta + google synced", "winner: variant 7 · CTR 3.9%"],
+    features: [
+      ["Generate", "Headlines, copy and creative variants built from your best-performing angles."],
+      ["Launch", "Push variants to Meta and Google Ads from one place."],
+      ["Optimize", "Tracks CTR and cost per result, pauses losers and scales winners."],
+    ],
+    pairs: ["competitor", "sentiment"],
   },
   seo: {
     name: "SEO",
@@ -51,6 +77,12 @@ export const TOOLS = {
     hue: 145,
     line: "Find the keywords you can win and the briefs to win them.",
     sample: ["crawled 1,204 pages", "86 quick-win keywords", "18 content briefs drafted"],
+    features: [
+      ["Audit", "Crawls your site and finds technical and content gaps."],
+      ["Find", "Keywords ranked by your real chance to win, not just by search volume."],
+      ["Brief", "Outlines, questions and sources, ready for Content OS to write."],
+    ],
+    pairs: ["content-os", "competitor"],
   },
 } satisfies Record<string, Tool>;
 

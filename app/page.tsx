@@ -1,44 +1,8 @@
 import { Hero } from "@/components/hero";
+import { Eyebrow, TextLink } from "@/components/ui";
 import { StackBuilder } from "@/components/stack-builder";
-import { ThemeToggle } from "@/components/theme-toggle";
 import { ToolRail } from "@/components/tool-rail";
 import { Walkthrough } from "@/components/walkthrough";
-
-const NAV = [
-  ["Tools", "#tools"],
-  ["Demo", "#demo"],
-  ["Own it", "#own"],
-  ["Agents", "#agents"],
-  ["Pricing", "#stack"],
-];
-
-function Logo() {
-  return (
-    <a href="#" className="flex items-center gap-2 font-extrabold tracking-tight" style={{ fontStretch: "125%" }}>
-      <svg width="22" height="22" viewBox="0 0 22 22" aria-hidden>
-        <ellipse cx="11" cy="16" rx="10" ry="5.5" fill="var(--fg)" />
-        <ellipse cx="11" cy="7.5" rx="6.5" ry="4.5" fill="var(--signal)" />
-      </svg>
-      GROWTHPEBBLES
-    </a>
-  );
-}
-
-function Eyebrow({ n, children }: { n: string; children: string }) {
-  return (
-    <div className="label">
-      <span className="text-signal-text">{n}</span> / {children}
-    </div>
-  );
-}
-
-function TextLink({ href, children }: { href: string; children: string }) {
-  return (
-    <a href={href} className="inline-flex items-center gap-2 border-b border-line-2 pb-1 text-sm font-medium text-fg hover:border-fg">
-      {children} <span aria-hidden>→</span>
-    </a>
-  );
-}
 
 const STEPS = [
   ["Install", "One command on your server, laptop or cloud: docker compose up. Or we set it up for you.", "Read the install guide"],
@@ -108,32 +72,9 @@ const FAQ: [string, [string, string][]][] = [
   ],
 ];
 
-const ASK_PROMPT = "What is GrowthPebbles (growthpebbles.com)? Summarize its pay-once, self-hosted AI marketing tools and who they're for.";
-const ASK_AI = [
-  ["ChatGPT", "https://chatgpt.com/?q="],
-  ["Claude", "https://claude.ai/new?q="],
-  ["Perplexity", "https://www.perplexity.ai/search?q="],
-];
-
 export default function Home() {
   return (
     <>
-      <header className="fixed inset-x-0 top-0 z-50 border-b border-line bg-ink-0/70 backdrop-blur-md">
-        <nav className="flex h-14 items-center justify-between px-4 sm:px-8">
-          <Logo />
-          <div className="flex items-center gap-6 text-sm text-fg-2">
-            {NAV.map(([label, href]) => (
-              <a key={href} href={href} className="hidden hover:text-fg md:block">
-                {label}
-              </a>
-            ))}
-            <a href="#stack" className="rounded-lg bg-signal px-3 py-2 font-semibold text-signal-ink hover:brightness-110">
-              Build your stack
-            </a>
-          </div>
-        </nav>
-      </header>
-
       <main>
         <Hero />
 
@@ -409,49 +350,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      <footer id="drops" className="border-t border-line px-4 py-12 sm:px-8">
-        <div className="flex flex-col justify-between gap-6 border-b border-line pb-10 md:flex-row md:items-center">
-          <div>
-            <div className="label">
-              <span className="text-signal-text">Drops</span> / new tools, monthly
-            </div>
-            <p className="mt-3 max-w-md text-sm text-fg-2">New pebbles, new agents and what our users built with them. One email a month.</p>
-          </div>
-          <form className="flex w-full max-w-md gap-2 rounded-xl border border-line-2 p-1.5">
-            <input type="email" required placeholder="you@company.com" aria-label="Email" className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-fg-3" />
-            <button className="rounded-lg bg-signal px-4 py-2 text-sm font-semibold text-signal-ink">Sign up →</button>
-          </form>
-        </div>
-        <div className="flex flex-col justify-between gap-6 py-8 md:flex-row md:items-center">
-          <Logo />
-          <div className="flex flex-wrap items-center gap-x-6 gap-y-3 text-sm text-fg-3">
-            {["Tools", "Agents", "Docs", "Drops", "Support", "Privacy", "Terms"].map((l) => (
-              <a key={l} href="#" className="hover:text-fg">
-                {l}
-              </a>
-            ))}
-            <ThemeToggle />
-          </div>
-        </div>
-        <div className="flex flex-col justify-between gap-4 border-t border-line pt-8 sm:flex-row sm:items-center">
-          <p className="text-xs text-fg-3">© 2026 GrowthPebbles · Marketing AI you own</p>
-          <div className="flex flex-wrap items-center gap-2 text-sm">
-            <span className="mr-2 text-fg-3">Ask AI about us</span>
-            {ASK_AI.map(([name, url]) => (
-              <a key={name} href={url + encodeURIComponent(ASK_PROMPT)} target="_blank" rel="noopener noreferrer" className="rounded-full border border-line-2 px-3 py-1 text-fg-2 hover:text-fg">
-                {name}
-              </a>
-            ))}
-          </div>
-        </div>
-        {/* SVG textLength makes the wordmark fit any width exactly */}
-        <svg aria-hidden viewBox="0 0 1000 130" className="mt-12 w-full select-none">
-          <text x="2" y="118" textLength="996" lengthAdjust="spacingAndGlyphs" fontSize="150" fill="none" stroke="var(--fg-3)" strokeWidth="1.2" className="display">
-            GROWTHPEBBLES
-          </text>
-        </svg>
-      </footer>
     </>
   );
 }

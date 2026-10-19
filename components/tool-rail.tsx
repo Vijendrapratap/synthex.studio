@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useRef } from "react";
 import { TOOLS } from "@/lib/stack";
 
@@ -11,9 +12,9 @@ export function ToolRail() {
     <>
       <div ref={rail} className="no-scrollbar flex snap-x snap-mandatory scroll-px-4 gap-3 overflow-x-auto px-4 sm:scroll-px-8 sm:px-8">
         {Object.entries(TOOLS).map(([id, t]) => (
-          <a
+          <Link
             key={id}
-            href={`#stack`}
+            href={`/tools/${id}`}
             className="group relative flex aspect-[4/3] w-[85vw] shrink-0 snap-start flex-col justify-end overflow-hidden rounded-2xl border border-line p-5 sm:w-[540px]"
             style={{
               background: `radial-gradient(circle at 75% 30%, oklch(0.6 0.2 ${t.hue} / 0.55), transparent 55%), linear-gradient(160deg, oklch(0.22 0.05 ${t.hue}), var(--ink-1) 70%)`,
@@ -39,7 +40,7 @@ export function ToolRail() {
               {t.name}
             </h3>
             <p className="mt-2 max-w-sm text-sm text-white/70">{t.line}</p>
-          </a>
+          </Link>
         ))}
         <div className="flex aspect-[4/3] w-[85vw] shrink-0 snap-start flex-col items-center justify-center gap-3 rounded-2xl border border-dashed border-line-2 text-center sm:w-[540px]">
           <span className="label">Next drop</span>

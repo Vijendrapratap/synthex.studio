@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
+import { Footer, Header } from "@/components/ui";
 import "./globals.css";
 
 const archivo = Archivo({
@@ -28,7 +29,11 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       <head>
         <script dangerouslySetInnerHTML={{ __html: themeScript }} />
       </head>
-      <body className="font-sans">{children}</body>
+      <body className="font-sans">
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

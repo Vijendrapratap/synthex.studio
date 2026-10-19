@@ -37,3 +37,9 @@ test("a partial stack never costs more than The Stack", () => {
 test("unknown and duplicate ids are ignored", () => {
   assert.equal(quote(["seo", "seo", "nope"]).total, TOOLS.seo.price);
 });
+
+test("every pairing points at a real, different tool", () => {
+  for (const [id, t] of Object.entries(TOOLS)) {
+    for (const p of t.pairs) assert.ok(p in TOOLS && p !== id, `${id} → ${p}`);
+  }
+});

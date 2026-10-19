@@ -1,3 +1,4 @@
+import { TextLink } from "@/components/ui";
 import { TOOLS, type ToolId } from "@/lib/stack";
 
 // Realistic output mocks per tool. Demo data only: fictional brands.
@@ -46,7 +47,7 @@ const KEYWORDS = [
   ["single origin vs blend", "2.7k", 9],
 ] as const;
 
-const MOCKS: Record<ToolId, React.ReactNode> = {
+export const MOCKS: Record<ToolId, React.ReactNode> = {
   competitor: (
     <div className="space-y-3">
       {COMPETITORS.map(([name, signal, when, tone]) => (
@@ -151,7 +152,7 @@ const MOCKS: Record<ToolId, React.ReactNode> = {
   ),
 };
 
-const COPY: Record<ToolId, [string, string]> = {
+export const COPY: Record<ToolId, [string, string]> = {
   competitor: ["Know first.", "Pricing changes, launches, new pages and job posts from every rival, with the date and a source link. Delivered as a weekly brief."],
   sentiment: ["Hear the room.", "Reviews, Reddit, X and comments, scored and grouped by theme, so you know what to fix and what to shout about."],
   "content-os": ["Never blank-page again.", "A month of posts written from your research, in your brand voice, scheduled across every channel. Not a template with your name swapped in."],
@@ -177,9 +178,10 @@ export function Walkthrough() {
               </div>
               <h3 className="display mt-6 text-[clamp(2.4rem,5vw,4.5rem)]">{title}</h3>
               <p className="mt-6 max-w-md text-lg leading-relaxed text-fg-2">{body}</p>
-              <a href={`?stack=${id}#stack`} className="mt-8 inline-flex items-center gap-2 border-b border-line-2 pb-1 text-sm font-medium hover:border-fg">
-                Add {t.name} to your stack · ${t.price} <span aria-hidden>→</span>
-              </a>
+              <div className="mt-8 flex flex-wrap gap-6">
+                <TextLink href={`/tools/${id}`}>{`Explore ${t.name}`}</TextLink>
+                <TextLink href={`/?stack=${id}#stack`}>{`Add to stack · $${t.price}`}</TextLink>
+              </div>
             </div>
             <div className="mx-auto w-full max-w-xl">{MOCKS[id]}</div>
           </div>
