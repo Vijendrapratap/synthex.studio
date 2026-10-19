@@ -1,0 +1,146 @@
+@import "tailwindcss";
+
+/* Dark is the default; [data-theme="light"] flips the ink scale. */
+:root {
+  --ink-0: #070707;
+  --ink-1: #0c0c0c;
+  --ink-2: #131313;
+  --ink-3: #1b1b1b;
+  --fg: #f4f3ef;
+  --fg-2: #b0afa9;
+  --fg-3: #76756f;
+  --line: #ffffff14;
+  --line-2: #ffffff24;
+  --signal: #c6f135;
+  --signal-ink: #0e1400;
+  --signal-text: #c6f135;
+  color-scheme: dark;
+}
+
+:root[data-theme="light"] {
+  --ink-0: #f4f3ef;
+  --ink-1: #eeede8;
+  --ink-2: #e7e5df;
+  --ink-3: #dddbd4;
+  --fg: #1c1b17;
+  --fg-2: #4b4a45;
+  --fg-3: #75736c;
+  --line: #16150f17;
+  --line-2: #16150f2e;
+  --signal-text: #4f6e00;
+  color-scheme: light;
+}
+
+@theme inline {
+  --color-ink-0: var(--ink-0);
+  --color-ink-1: var(--ink-1);
+  --color-ink-2: var(--ink-2);
+  --color-ink-3: var(--ink-3);
+  --color-fg: var(--fg);
+  --color-fg-2: var(--fg-2);
+  --color-fg-3: var(--fg-3);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-signal: var(--signal);
+  --color-signal-ink: var(--signal-ink);
+  --color-signal-text: var(--signal-text);
+  --font-sans: var(--font-archivo), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-jetbrains), ui-monospace, monospace;
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--ink-0);
+  color: var(--fg);
+}
+
+/* Wide, heavy display type */
+.display {
+  font-stretch: 125%;
+  font-weight: 800;
+  letter-spacing: -0.035em;
+  line-height: 0.92;
+}
+
+.outline-text {
+  color: transparent;
+  -webkit-text-stroke: 1.5px var(--fg-3);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--fg-3);
+}
+
+/* The pebble: a slowly morphing blob tinted by --h */
+.pebble {
+  --h: 120;
+  aspect-ratio: 1.12;
+  border-radius: 63% 37% 56% 44% / 52% 61% 39% 48%;
+  background:
+    radial-gradient(circle at 30% 25%, oklch(0.97 0.05 var(--h) / 0.95), transparent 32%),
+    radial-gradient(circle at 70% 80%, oklch(0.35 0.15 var(--h)), transparent 60%),
+    oklch(0.72 0.19 var(--h));
+  box-shadow: 0 40px 120px -20px oklch(0.72 0.19 var(--h) / 0.45);
+  animation: morph 12s ease-in-out infinite;
+  transition: --h 1.2s, background 1.2s, box-shadow 1.2s;
+}
+
+@property --h {
+  syntax: "<number>";
+  inherits: true;
+  initial-value: 120;
+}
+
+@keyframes morph {
+  0%, 100% { border-radius: 63% 37% 56% 44% / 52% 61% 39% 48%; transform: rotate(0deg); }
+  50% { border-radius: 46% 54% 38% 62% / 60% 42% 58% 40%; transform: rotate(8deg); }
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: none; }
+}
+
+.rise {
+  animation: rise 0.5s var(--ease-out-expo) both;
+}
+
+/* Scroll-driven reveals. Browsers without view timelines just show everything. */
+@supports (animation-timeline: view()) {
+  .reveal {
+    animation: rise linear both;
+    animation-timeline: view();
+    animation-range: entry 0% entry 60%;
+  }
+
+  .ink {
+    animation: ink linear both;
+    animation-timeline: view();
+    animation-range: cover 25% cover 50%;
+  }
+}
+
+@keyframes ink {
+  from { color: var(--fg-3); opacity: 0.35; }
+  to { color: var(--fg); opacity: 1; }
+}
+
+.no-scrollbar {
+  scrollbar-width: none;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation: none !important;
+    transition: none !important;
+    scroll-behavior: auto !important;
+  }
+}
