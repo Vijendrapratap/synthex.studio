@@ -133,6 +133,56 @@ body {
   to { color: var(--fg); opacity: 1; }
 }
 
+/* Scene loops: gallery cards, hero, ticker */
+@keyframes floaty {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-12px); }
+}
+@keyframes drift {
+  0% { transform: translateY(30px); opacity: 0; }
+  12%, 80% { opacity: 1; }
+  100% { transform: translateY(-170px); opacity: 0; }
+}
+@keyframes pop {
+  0%, 6% { transform: scale(0.4); opacity: 0; }
+  12%, 85% { transform: scale(1); opacity: 1; }
+  100% { transform: scale(1); opacity: 0; }
+}
+@keyframes drop {
+  0%, 5% { transform: translateY(-24px); opacity: 0; }
+  12%, 85% { transform: none; opacity: 1; }
+  100% { opacity: 0; }
+}
+@keyframes feed {
+  to { transform: translateY(-50%); }
+}
+@keyframes marquee {
+  to { transform: translateX(-50%); }
+}
+@keyframes draw {
+  0% { stroke-dashoffset: 1; }
+  45%, 100% { stroke-dashoffset: 0; }
+}
+@keyframes race {
+  0% { transform: scaleX(0); }
+  55%, 100% { transform: scaleX(1); }
+}
+@keyframes typing {
+  0% { transform: scaleX(0); }
+  35%, 100% { transform: scaleX(1); }
+}
+@keyframes ping {
+  0% { transform: scale(1); opacity: 0.8; }
+  100% { transform: scale(3); opacity: 0; }
+}
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 0 1px #c6f135, 0 0 20px -4px #c6f13566; }
+  50% { box-shadow: 0 0 0 1px #c6f135, 0 0 40px 0 #c6f135aa; }
+}
+
 .no-scrollbar {
   scrollbar-width: none;
 }

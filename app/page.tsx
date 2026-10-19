@@ -1,8 +1,10 @@
+import Link from "next/link";
+import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
 import { Eyebrow, TextLink } from "@/components/ui";
 import { StackBuilder } from "@/components/stack-builder";
-import { ToolRail } from "@/components/tool-rail";
 import { Walkthrough } from "@/components/walkthrough";
+import { TOOLS, type ToolId } from "@/lib/stack";
 
 const STEPS = [
   ["Install", "One command on your server, laptop or cloud: docker compose up. Or we set it up for you.", "Read the install guide"],
@@ -72,11 +74,46 @@ const FAQ: [string, [string, string][]][] = [
   ],
 ];
 
+const TICKER: [ToolId, string][] = [
+  ["competitor", "Northwind raised prices 12%"],
+  ["content-os", "30 posts scheduled for May"],
+  ["sentiment", "Sentiment up 8% this week"],
+  ["ads", "Variant 2 wins · CTR 3.9%"],
+  ["seo", "86 quick-win keywords found"],
+  ["competitor", "Brewly launched a Reels campaign"],
+  ["sentiment", "Top complaint: shipping time"],
+  ["content-os", "Brand voice applied to 12 drafts"],
+  ["ads", "Losing ads paused · $140 saved"],
+  ["seo", "18 briefs ready to write"],
+];
+
+// In the owner's words. Each pain links to the pebble that fixes it.
+const PAINS: [string, ToolId | "stack", string][] = [
+  ["I know I should post every day. I just don't have the time.", "content-os", "A month of posts, written in your voice and scheduled in one afternoon."],
+  ["My competitor ran a promo and I heard about it from a customer.", "competitor", "Know the same day a rival changes prices, pages or campaigns."],
+  ["Sales dipped and I honestly don't know why.", "sentiment", "See what customers are saying right now, grouped into what to fix."],
+  ["I spend on ads every month and can't tell what's working.", "ads", "Variants tested for you. Winners get the budget, losers get paused."],
+  ["We're basically invisible on Google.", "seo", "The keywords you can actually win, with briefs ready to write."],
+  ["I pay for six subscriptions and still do it all myself.", "stack", "Every tool, paid for once, running on your own server."],
+];
+
 export default function Home() {
   return (
     <>
       <main>
         <Hero />
+
+        {/* Ticker: what the pebbles did today */}
+        <div aria-hidden className="overflow-hidden border-y border-line bg-ink-1 py-4 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
+          <div className="flex w-max gap-3 hover:[animation-play-state:paused]" style={{ animation: "marquee 60s linear infinite" }}>
+            {[...TICKER, ...TICKER].map(([tool, text], i) => (
+              <span key={i} className="flex items-center gap-2 whitespace-nowrap rounded-full border border-line-2 px-4 py-1.5 text-sm text-fg-2">
+                <span className="size-2 rounded-full" style={{ background: `oklch(0.75 0.16 ${TOOLS[tool].hue})` }} />
+                {text}
+              </span>
+            ))}
+          </div>
+        </div>
 
         {/* Proof: ownership facts, not testimonials */}
         <section className="flex flex-col items-center justify-center gap-4 px-4 py-24 sm:flex-row sm:px-8">
@@ -117,29 +154,73 @@ export default function Home() {
           </div>
         </section>
 
-        {/* 01 · Tools */}
-        <section id="tools" className="scroll-mt-14 border-t border-line py-24">
+        {/* 01 · Gallery */}
+        <section id="tools" className="scroll-mt-14 py-24">
           <div className="mb-12 flex flex-col justify-between gap-6 px-4 sm:px-8 lg:flex-row lg:items-end">
             <div>
-              <Eyebrow n="01">The pebbles</Eyebrow>
+              <Eyebrow n="01">Made with pebbles</Eyebrow>
               <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
-                Pick your
+                Real work,
                 <br />
-                pebbles.
+                <span className="text-signal-text">done for you.</span>
               </h2>
             </div>
             <p className="max-w-md text-fg-3 leading-relaxed">
-              Each tool does one marketing job really well. Buy the ones you need, run them on your own box, and
-              chain them into your own marketing OS.
+              This is what a week looks like when the pebbles are running. Every card is a real output type. Open one
+              to see the tool behind it.
             </p>
           </div>
-          <ToolRail />
+          <Gallery />
+        </section>
+
+        {/* 02 · Pains */}
+        <section className="border-t border-line px-4 py-24 sm:px-8">
+          <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
+            <div>
+              <Eyebrow n="02">Sound familiar?</Eyebrow>
+              <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
+                You run the
+                <br />
+                <span className="outline-text">whole business.</span>
+              </h2>
+            </div>
+            <p className="max-w-md text-fg-3 leading-relaxed">
+              Marketing is one of twenty jobs on your plate. Here is what owners tell us, and the pebble that takes
+              each one off it.
+            </p>
+          </div>
+          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+            {PAINS.map(([quote, tool, fix]) => {
+              const t = tool === "stack" ? null : TOOLS[tool];
+              const hue = t?.hue ?? 122;
+              return (
+                <Link
+                  key={quote}
+                  href={t ? `/tools/${tool}` : "/#stack"}
+                  className="reveal group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-ink-1 p-7 transition duration-500 ease-out-expo hover:-translate-y-1 hover:border-line-2"
+                >
+                  <div aria-hidden className="pebble absolute -right-16 -top-16 w-48 opacity-0 transition duration-700 group-hover:opacity-60" style={{ "--h": hue } as React.CSSProperties} />
+                  <p className="relative text-[1.6rem] font-semibold leading-tight tracking-tight text-fg" style={{ fontStretch: "105%" }}>
+                    “{quote}”
+                  </p>
+                  <div className="relative mt-8 border-t border-line pt-5">
+                    <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: `oklch(0.78 0.16 ${hue})` }}>
+                      <span className="pebble w-4" style={{ "--h": hue, animation: "none" } as React.CSSProperties} />
+                      {t?.name ?? "The Stack"}
+                    </div>
+                    <p className="mt-2 text-fg-2">{fix}</p>
+                    <span className="mt-4 inline-block text-sm text-fg-3 transition group-hover:translate-x-1 group-hover:text-fg">Fix this →</span>
+                  </div>
+                </Link>
+              );
+            })}
+          </div>
         </section>
 
         {/* 02 · See it work */}
         <section id="demo" className="scroll-mt-14 border-t border-line">
           <div className="px-4 pt-24 pb-4 sm:px-8">
-            <Eyebrow n="02">See it work</Eyebrow>
+            <Eyebrow n="03">See it work</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
               One brand.
               <br />
@@ -155,7 +236,7 @@ export default function Home() {
 
         {/* 02 · How it works */}
         <section className="border-t border-line px-4 py-24 sm:px-8">
-          <Eyebrow n="03">How it works</Eyebrow>
+          <Eyebrow n="04">How it works</Eyebrow>
           <div className="mt-8 grid gap-12 md:grid-cols-3 md:gap-6">
             {STEPS.map(([title, body, link], i) => (
               <div key={title} className="border-t border-line pt-6">
@@ -175,7 +256,7 @@ export default function Home() {
         {/* 03 · Ownership */}
         <section id="own" className="scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2 lg:items-end">
           <div>
-            <Eyebrow n="04">Built to own</Eyebrow>
+            <Eyebrow n="05">Built to own</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,7vw,5.5rem)]">
               Your server.
               <br />
@@ -231,7 +312,7 @@ export default function Home() {
             <div className="pebble absolute bottom-[6%] right-[14%] w-[26%]" style={{ "--h": 200, animationDelay: "-8s" } as React.CSSProperties} />
           </div>
           <div>
-            <Eyebrow n="05">Agents · coming soon</Eyebrow>
+            <Eyebrow n="06">Agents · coming soon</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,7vw,5.5rem)]">
               Agents that
               <br />
@@ -261,7 +342,7 @@ export default function Home() {
         {/* 05 · Bring your own */}
         <section className="grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2">
           <div>
-            <Eyebrow n="06">Bring your own</Eyebrow>
+            <Eyebrow n="07">Bring your own</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,7vw,5.5rem)]">
               Plug in
               <br />
@@ -289,7 +370,7 @@ export default function Home() {
         <section id="stack" className="scroll-mt-14 border-t border-line px-4 py-24 sm:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
-              <Eyebrow n="07">Build your stack</Eyebrow>
+              <Eyebrow n="08">Build your stack</Eyebrow>
               <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
                 More pebbles,
                 <br />
@@ -307,7 +388,7 @@ export default function Home() {
         {/* 08 · FAQ */}
         <section id="faq" className="scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-[5fr_7fr]">
           <div>
-            <Eyebrow n="08">Questions</Eyebrow>
+            <Eyebrow n="09">Questions</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,6vw,5rem)]">
               Fair
               <br />
