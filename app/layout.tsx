@@ -20,7 +20,6 @@ const jetbrains = JetBrains_Mono({
 export const metadata: Metadata = {
   title: `${BRAND.name} · ${BRAND.tagline}`,
   description:
-    `${BRAND.expansion}. ` +
     "Self-hosted AI tools for content, competitor research, sentiment, ads and SEO. Pay once, run on your servers, use any model.",
 };
 
