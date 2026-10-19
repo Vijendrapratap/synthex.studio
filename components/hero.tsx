@@ -2,6 +2,8 @@
 
 import Link from "next/link";
 import { useEffect, useState } from "react";
+import { ToolIcon } from "@/components/tool-icon";
+import { BRAND } from "@/lib/brand";
 import { TOOLS, type ToolId } from "@/lib/stack";
 
 const PROMPTS: Record<ToolId, string> = {
@@ -12,114 +14,151 @@ const PROMPTS: Record<ToolId, string> = {
   seo: "Find keywords we can rank for in 90 days",
 };
 
-// One floating outcome per tool, placed around the pebble (percent of the art box).
-const FLOATS: Record<ToolId, { icon: string; title: string; sub: string; pos: string }> = {
-  "content-os": { icon: "✓", title: "30 posts scheduled", sub: "LinkedIn · Instagram · X", pos: "left-[2%] top-[8%]" },
-  competitor: { icon: "▲", title: "Northwind raised prices 12%", sub: "spotted 2 hours ago", pos: "right-[0%] top-[22%]" },
-  sentiment: { icon: "♥", title: "Sentiment +8% this week", sub: "top praise: taste", pos: "left-[4%] top-[50%]" },
-  ads: { icon: "★", title: "Variant 2 wins · CTR 3.9%", sub: "budget moved automatically", pos: "right-[4%] top-[66%]" },
-  seo: { icon: "↗", title: "86 quick-win keywords", sub: "18 briefs ready to write", pos: "left-[16%] bottom-[2%]" },
-};
+// Floating outcomes pinned to the product window's edges, clear of its content.
+const FLOATS: [ToolId, string, string, string][] = [
+  ["competitor", "Northwind raised prices 12%", "spotted 2 hours ago", "-left-12 -top-9"],
+  ["sentiment", "Sentiment +8% this week", "top praise: taste", "right-6 -bottom-9"],
+  ["seo", "86 quick-win keywords", "18 briefs ready to write", "-left-14 bottom-16"],
+];
 
 const ids = Object.keys(TOOLS) as ToolId[];
 
-export function Hero() {
+export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
   const [i, setI] = useState(0);
   const [mode, setMode] = useState<"brand" | "task">("brand");
   const id = ids[i];
   const tool = TOOLS[id];
 
   useEffect(() => {
-    const t = setInterval(() => setI((n) => (n + 1) % ids.length), 3500);
+    const t = setInterval(() => setI((n) => (n + 1) % ids.length), 4500);
     return () => clearInterval(t);
   }, []);
 
   return (
-    <section className="relative min-h-[100svh] overflow-hidden px-4 pt-28 pb-10 sm:px-8 flex flex-col justify-end">
-      {/* Art: pebble + floating outcomes */}
-      <div aria-hidden className="absolute -right-[20%] top-[10%] aspect-square w-[95vw] max-w-[780px] opacity-40 sm:right-[2%] sm:w-[50vw] sm:opacity-100">
-        <div className="pebble absolute inset-[12%]" style={{ "--h": tool.hue } as React.CSSProperties} />
-        {ids.map((tid, n) => {
-          const f = FLOATS[tid];
-          const on = tid === id;
-          return (
-            <div key={tid} className={`absolute hidden lg:block ${f.pos}`} style={{ animation: `floaty ${5 + n * 0.6}s ease-in-out ${-n}s infinite` }}>
-              <div
-                className={`flex items-center gap-3 rounded-2xl border bg-ink-1/80 px-4 py-3 backdrop-blur-md transition duration-700 ease-out-expo ${on ? "scale-105 border-signal opacity-100 shadow-[0_20px_60px_-20px_var(--signal)]" : "scale-95 border-line-2 opacity-60"}`}
-              >
-                <span className="grid size-8 place-items-center rounded-full text-sm" style={{ background: `oklch(0.72 0.17 ${TOOLS[tid].hue} / 0.2)`, color: `oklch(0.8 0.16 ${TOOLS[tid].hue})` }}>
-                  {f.icon}
-                </span>
-                <span>
-                  <span className="block text-sm font-semibold text-fg">{f.title}</span>
-                  <span className="block text-xs text-fg-3">{f.sub}</span>
-                </span>
-              </div>
-            </div>
-          );
-        })}
+    <section className="relative overflow-hidden px-4 pt-28 pb-20 sm:px-8 lg:min-h-[100svh] lg:pt-32">
+      <div aria-hidden className="aurora">
+        <span className="right-[-10%] top-[-10%] size-[620px]" style={{ background: "oklch(0.85 0.2 122)" }} />
+        <span className="right-[15%] top-[30%] size-[520px]" style={{ background: `oklch(0.7 0.18 ${tool.hue})`, animationDelay: "-6s" }} />
+        <span className="bottom-[-20%] left-[-10%] size-[480px] opacity-25" style={{ background: "oklch(0.6 0.2 290)", animationDelay: "-12s" }} />
       </div>
 
-      <div className="relative">
-        <h1 className="display text-[clamp(3.2rem,11vw,9.5rem)]">
-          <span className="block">
-            Own it.
-            <span className="ml-[0.08em] inline-block size-[0.14em] rounded-full bg-signal align-baseline shadow-[0_0_24px_var(--signal)]" />
-          </span>
-          <span className="block outline-text">Run it.</span>
-          <span className="block outline-text">Grow it.</span>
-        </h1>
-
-        <p className="mt-8 max-w-xl text-lg leading-relaxed text-fg-2">
-          Your marketing team in a box, and you own the box. Plan content, watch competitors, hear customers and run
-          ads with AI tools you buy once and keep forever.
-        </p>
-
-        <div className="mt-8 max-w-2xl">
-          <div role="tablist" className="flex gap-1 text-sm">
-            {(["brand", "task"] as const).map((m) => (
-              <button
-                key={m}
-                role="tab"
-                aria-selected={mode === m}
-                onClick={() => setMode(m)}
-                className={`rounded-t-xl px-4 py-2 transition ${mode === m ? "bg-ink-2 text-fg" : "text-fg-3 hover:text-fg-2"}`}
-              >
-                {m === "brand" ? (
-                  <>
-                    Scan my brand <span className="ml-1 rounded-md bg-signal/15 px-1.5 py-0.5 text-[11px] text-signal-text">Free</span>
-                  </>
-                ) : (
-                  "Describe a task"
-                )}
-              </button>
-            ))}
+      <div className="relative grid items-center gap-16 lg:grid-cols-[1fr_1.1fr]">
+        <div>
+          <div className="label flex items-center gap-2">
+            <span className="size-1.5 rounded-full bg-signal shadow-[0_0_10px_var(--signal)]" /> Pay once · self-hosted · any model
           </div>
-          <form action="#demo" className={`flex items-center gap-3 rounded-2xl bg-ink-2 p-2 pl-4 ${mode === "brand" ? "rounded-tl-none" : ""}`}>
-            <span className="font-mono text-signal-text">{mode === "brand" ? "◎" : "/"}</span>
-            <input
-              key={mode === "brand" ? "brand" : id}
-              aria-label={mode === "brand" ? "Your website" : "Describe a task"}
-              placeholder={mode === "brand" ? "yourbrand.com" : PROMPTS[id]}
-              className="rise min-w-0 flex-1 bg-transparent py-2 text-fg outline-none placeholder:text-fg-3"
-            />
-            <button className="rounded-xl bg-signal px-4 py-2.5 font-semibold text-signal-ink transition hover:brightness-110">
-              {mode === "brand" ? "Scan ↵" : "Try it ↵"}
-            </button>
-          </form>
+          <h1 className="display mt-8 text-[clamp(3.2rem,7.4vw,7.6rem)]">
+            <span className="block">Own it.</span>
+            <span className="block outline-text">Run it.</span>
+            <span className="block text-signal-text">Grow it.</span>
+          </h1>
+
+          <p className="mt-8 max-w-xl text-lg leading-relaxed text-fg-2">
+            Your marketing team in a box, and you own the box. Plan content, watch competitors, hear customers and run
+            ads with AI tools you buy once and keep forever.
+          </p>
+
+          <div className="mt-8 max-w-xl">
+            <div role="tablist" className="flex gap-1 text-sm">
+              {(["brand", "task"] as const).map((m) => (
+                <button
+                  key={m}
+                  role="tab"
+                  aria-selected={mode === m}
+                  onClick={() => setMode(m)}
+                  className={`rounded-t-xl px-4 py-2 transition ${mode === m ? "bg-ink-2 text-fg" : "text-fg-3 hover:text-fg-2"}`}
+                >
+                  {m === "brand" ? (
+                    <>
+                      Scan my brand <span className="ml-1 rounded-md bg-signal/15 px-1.5 py-0.5 text-[11px] text-signal-text">Free</span>
+                    </>
+                  ) : (
+                    "Describe a task"
+                  )}
+                </button>
+              ))}
+            </div>
+            <form action="#demo" className={`flex items-center gap-3 rounded-2xl bg-ink-2 p-2 pl-4 ${mode === "brand" ? "rounded-tl-none" : ""}`}>
+              <span className="font-mono text-signal-text">{mode === "brand" ? "◎" : "/"}</span>
+              <input
+                key={mode === "brand" ? "brand" : id}
+                aria-label={mode === "brand" ? "Your website" : "Describe a task"}
+                placeholder={mode === "brand" ? "yourbrand.com" : PROMPTS[id]}
+                className="rise min-w-0 flex-1 bg-transparent py-2 text-fg outline-none placeholder:text-fg-3"
+              />
+              <button className="rounded-xl bg-signal px-4 py-2.5 font-semibold text-signal-ink transition hover:brightness-110">
+                {mode === "brand" ? "Scan ↵" : "Try it ↵"}
+              </button>
+            </form>
+          </div>
         </div>
 
-        <div className="label mt-10 flex flex-wrap items-center gap-x-5 gap-y-2">
-          <span className="inline-block h-0.5 w-6 bg-line-2">
-            <span key={id} className="block h-full w-full origin-left bg-signal [animation:race_3.5s_linear]" />
-          </span>
-          <span>Now running</span>
-          <span className="text-fg">{tool.name}</span>
-          <span>{tool.stage}</span>
-          <Link href={`/tools/${id}`} className="text-fg hover:text-signal-text">
-            See it ↗
-          </Link>
+        {/* Product window: the active tool's real output */}
+        <div aria-hidden className="relative hidden lg:block">
+          <div className="overflow-hidden rounded-[22px] border border-line-2 bg-ink-1/85 shadow-[0_40px_120px_-30px_rgb(0_0_0/0.8)] backdrop-blur-xl">
+            <div className="flex items-center gap-2 border-b border-line px-4 py-3">
+              <span className="size-2.5 rounded-full bg-fg-3/50" />
+              <span className="size-2.5 rounded-full bg-fg-3/50" />
+              <span className="size-2.5 rounded-full bg-fg-3/50" />
+              <span className="mx-auto rounded-md bg-ink-3 px-3 py-1 font-mono text-[11px] text-fg-3">
+                app.{BRAND.domain}/{id}
+              </span>
+              <span className="flex items-center gap-1.5 font-mono text-[11px] text-signal-text">
+                <span className="size-1.5 animate-pulse rounded-full bg-signal" /> live
+              </span>
+            </div>
+            <div className="grid grid-cols-[170px_1fr]">
+              <nav className="space-y-1 border-r border-line p-3">
+                {ids.map((tid) => (
+                  <div key={tid} className={`flex items-center gap-2.5 rounded-lg px-2 py-1.5 text-[13px] transition ${tid === id ? "bg-ink-3 text-fg" : "text-fg-3"}`}>
+                    <ToolIcon id={tid} size={24} />
+                    {TOOLS[tid].name}
+                  </div>
+                ))}
+                <div className="mt-4 flex items-center gap-2.5 px-2 py-1.5 text-[13px] text-fg-3">
+                  <ToolIcon id="agent" size={24} /> Agents <span className="ml-auto rounded bg-signal/15 px-1 text-[9px] text-signal-text">SOON</span>
+                </div>
+              </nav>
+              <div className="relative h-[420px] overflow-hidden p-5 [mask-image:linear-gradient(#000_82%,transparent)]">
+                <div className="mb-4 flex items-baseline justify-between">
+                  <span className="font-semibold">{tool.name}</span>
+                  <span className="label">{tool.stage}</span>
+                </div>
+                <div key={id} className="rise">
+                  {mocks[id]}
+                </div>
+              </div>
+            </div>
+          </div>
+
+          {FLOATS.map(([tid, title, sub, pos], n) => {
+            const on = tid === id;
+            return (
+              <div key={tid} className={`absolute ${pos}`} style={{ animation: `floaty ${5 + n * 0.6}s ease-in-out ${-n}s infinite` }}>
+                <div
+                  className={`flex items-center gap-3 rounded-2xl border bg-ink-1/90 px-3.5 py-2.5 backdrop-blur-md transition duration-700 ease-out-expo ${on ? "scale-105 border-signal opacity-100 shadow-[0_20px_60px_-20px_var(--signal)]" : "scale-95 border-line-2 opacity-70"}`}
+                >
+                  <ToolIcon id={tid} size={32} />
+                  <span>
+                    <span className="block text-sm font-semibold text-fg">{title}</span>
+                    <span className="block text-xs text-fg-3">{sub}</span>
+                  </span>
+                </div>
+              </div>
+            );
+          })}
         </div>
+      </div>
+
+      <div className="label relative mt-14 flex flex-wrap items-center gap-x-5 gap-y-2">
+        <span className="inline-block h-0.5 w-6 bg-line-2">
+          <span key={id} className="block h-full w-full origin-left bg-signal [animation:race_4.5s_linear]" />
+        </span>
+        <span>Now running</span>
+        <span className="text-fg">{tool.name}</span>
+        <Link href={`/tools/${id}`} className="text-fg hover:text-signal-text">
+          See it ↗
+        </Link>
       </div>
     </section>
   );

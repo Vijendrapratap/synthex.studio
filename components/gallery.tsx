@@ -1,7 +1,8 @@
 import Link from "next/link";
+import { ToolIcon } from "@/components/tool-icon";
 import { TOOLS, type ToolId } from "@/lib/stack";
 
-// "Made with pebbles": code-drawn, looping scenes of real outcomes.
+// "What it makes": code-drawn, looping scenes of real outcomes.
 // Scenes are pure CSS/SVG on a fixed dark canvas (they're the "images").
 // Swap any scene for a screen recording of the real tool when you have one.
 
@@ -206,7 +207,9 @@ function AgentScene() {
             </div>
           ))}
         </div>
-        <div className="pebble absolute left-1/2 top-1/2 w-20 -translate-x-1/2 -translate-y-1/2" style={{ "--h": 122 } as React.CSSProperties} />
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[30%] shadow-[0_0_60px_-6px_#c6f135]">
+          <ToolIcon id="agent" size={76} />
+        </div>
       </div>
     </div>
   );

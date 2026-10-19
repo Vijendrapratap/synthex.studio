@@ -3,7 +3,9 @@ import { Gallery } from "@/components/gallery";
 import { Hero } from "@/components/hero";
 import { Eyebrow, TextLink } from "@/components/ui";
 import { StackBuilder } from "@/components/stack-builder";
-import { Walkthrough } from "@/components/walkthrough";
+import { ToolIcon } from "@/components/tool-icon";
+import { MOCKS, Walkthrough } from "@/components/walkthrough";
+import { BRAND } from "@/lib/brand";
 import { TOOLS, type ToolId } from "@/lib/stack";
 
 const STEPS = [
@@ -44,7 +46,7 @@ const PROOF = [
 const MANIFESTO = [
   "Every month you pay for seats. Every month the price creeps up. Your content calendar, your competitor notes, your customer insights all live on someone else's servers.",
   "The day you stop paying, your history goes with them. You built the knowledge, but you never owned it.",
-  "GrowthPebbles flips that. Buy the tool once, run it where you want, plug in the model you trust. Your marketing brain stays yours.",
+  `${BRAND.name} flips that. Buy the tool once, run it where you want, plug in the model you trust. Your marketing brain stays yours.`,
 ];
 
 // Draft answers: confirm these policies before launch.
@@ -52,7 +54,7 @@ const FAQ: [string, [string, string][]][] = [
   [
     "General",
     [
-      ["What is GrowthPebbles?", "A collection of AI marketing tools (content, competitor research, sentiment, ads and SEO) that you buy once and run on your own infrastructure. Each tool works alone, and together they share research and brand context."],
+      [`What is ${BRAND.name}?`, "A collection of AI marketing tools (content, competitor research, sentiment, ads and SEO) that you buy once and run on your own infrastructure. Each tool works alone, and together they share research and brand context."],
       ["Do I need to be technical?", "If you can paste one command, you can install it. Prefer not to? Our done-for-you setup installs everything on your cloud and hands you the keys."],
       ["Which AI models does it use?", "Whichever you choose: OpenRouter, OpenAI, Anthropic, or local models through Ollama. You pay the provider directly, with no markup from us."],
     ],
@@ -87,7 +89,7 @@ const TICKER: [ToolId, string][] = [
   ["seo", "18 briefs ready to write"],
 ];
 
-// In the owner's words. Each pain links to the pebble that fixes it.
+// In the owner's words. Each pain links to the tool that fixes it.
 const PAINS: [string, ToolId | "stack", string][] = [
   ["I know I should post every day. I just don't have the time.", "content-os", "A month of posts, written in your voice and scheduled in one afternoon."],
   ["My competitor ran a promo and I heard about it from a customer.", "competitor", "Know the same day a rival changes prices, pages or campaigns."],
@@ -101,9 +103,9 @@ export default function Home() {
   return (
     <>
       <main>
-        <Hero />
+        <Hero mocks={MOCKS} />
 
-        {/* Ticker: what the pebbles did today */}
+        {/* Ticker: what the tools did today */}
         <div aria-hidden className="overflow-hidden border-y border-line bg-ink-1 py-4 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
           <div className="flex w-max gap-3 hover:[animation-play-state:paused]" style={{ animation: "marquee 60s linear infinite" }}>
             {[...TICKER, ...TICKER].map(([tool, text], i) => (
@@ -115,15 +117,16 @@ export default function Home() {
           </div>
         </div>
 
+        <div className="surface-light pb-4">
         {/* Proof: ownership facts, not testimonials */}
-        <section className="flex flex-col items-center justify-center gap-4 px-4 py-24 sm:flex-row sm:px-8">
+        <section className="grid-bg flex flex-col items-center justify-center gap-4 px-4 py-24 sm:flex-row sm:px-8">
           {PROOF.map(([big, small, tag, hue, rot]) => (
             <div
               key={big}
               className="reveal flex aspect-[4/5] w-full max-w-[300px] flex-col justify-between rounded-[32px] border border-line p-6 transition duration-500 ease-out-expo hover:!rotate-0 hover:-translate-y-2"
-              style={{ rotate: `${rot}deg`, background: `color-mix(in oklch, var(--ink-1) 82%, oklch(0.75 0.16 ${hue}))` }}
+              style={{ rotate: `${rot}deg`, background: `color-mix(in oklch, var(--ink-1) 80%, oklch(0.8 0.14 ${hue}))`, boxShadow: "0 30px 60px -30px rgb(0 0 0 / 0.25)" }}
             >
-              <span className="w-fit rounded-full bg-ink-0/40 px-3 py-1 text-xs text-fg-2">{tag}</span>
+              <span className="w-fit rounded-full bg-ink-1/70 px-3 py-1 text-xs text-fg-2">{tag}</span>
               <div>
                 <div className="display text-4xl" style={{ letterSpacing: "-0.03em" }}>
                   {big}
@@ -135,7 +138,7 @@ export default function Home() {
         </section>
 
         {/* Manifesto: words ink in as you scroll */}
-        <section className="mx-2 rounded-[40px] bg-ink-2 px-4 py-24 sm:mx-4 sm:px-8 lg:py-32">
+        <section className="mx-2 rounded-[40px] border border-line bg-ink-1 px-4 py-24 sm:mx-4 sm:px-8 lg:py-32">
           <div className="grid gap-10 lg:grid-cols-[5fr_7fr]">
             <h2 className="display text-[clamp(2.4rem,5vw,4.5rem)] lg:sticky lg:top-28 lg:self-start">
               Stop renting your marketing brain.
@@ -153,12 +156,13 @@ export default function Home() {
             </div>
           </div>
         </section>
+        </div>
 
         {/* 01 · Gallery */}
         <section id="tools" className="scroll-mt-14 py-24">
           <div className="mb-12 flex flex-col justify-between gap-6 px-4 sm:px-8 lg:flex-row lg:items-end">
             <div>
-              <Eyebrow n="01">Made with pebbles</Eyebrow>
+              <Eyebrow n="01">What it makes</Eyebrow>
               <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
                 Real work,
                 <br />
@@ -166,7 +170,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-md text-fg-3 leading-relaxed">
-              This is what a week looks like when the pebbles are running. Every card is a real output type. Open one
+              This is what a week looks like when the suite is running. Every card is a real output type. Open one
               to see the tool behind it.
             </p>
           </div>
@@ -174,7 +178,7 @@ export default function Home() {
         </section>
 
         {/* 02 · Pains */}
-        <section className="border-t border-line px-4 py-24 sm:px-8">
+        <section className="surface-light px-4 py-24 sm:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
               <Eyebrow n="02">Sound familiar?</Eyebrow>
@@ -185,7 +189,7 @@ export default function Home() {
               </h2>
             </div>
             <p className="max-w-md text-fg-3 leading-relaxed">
-              Marketing is one of twenty jobs on your plate. Here is what owners tell us, and the pebble that takes
+              Marketing is one of twenty jobs on your plate. Here is what owners tell us, and the tool that takes
               each one off it.
             </p>
           </div>
@@ -197,15 +201,15 @@ export default function Home() {
                 <Link
                   key={quote}
                   href={t ? `/tools/${tool}` : "/#stack"}
-                  className="reveal group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-ink-1 p-7 transition duration-500 ease-out-expo hover:-translate-y-1 hover:border-line-2"
+                  className="reveal group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-ink-1 p-7 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition duration-500 ease-out-expo hover:-translate-y-1 hover:border-line-2 hover:shadow-[0_30px_60px_-30px_rgb(0_0_0/0.25)]"
                 >
-                  <div aria-hidden className="pebble absolute -right-16 -top-16 w-48 opacity-0 transition duration-700 group-hover:opacity-60" style={{ "--h": hue } as React.CSSProperties} />
+                  <div aria-hidden className="absolute inset-0 opacity-0 transition duration-700 group-hover:opacity-100" style={{ background: `radial-gradient(circle at 100% 0%, oklch(0.85 0.12 ${hue} / 0.35), transparent 55%)` }} />
                   <p className="relative text-[1.6rem] font-semibold leading-tight tracking-tight text-fg" style={{ fontStretch: "105%" }}>
                     “{quote}”
                   </p>
                   <div className="relative mt-8 border-t border-line pt-5">
-                    <div className="flex items-center gap-2 text-sm font-semibold" style={{ color: `oklch(0.78 0.16 ${hue})` }}>
-                      <span className="pebble w-4" style={{ "--h": hue, animation: "none" } as React.CSSProperties} />
+                    <div className="flex items-center gap-2.5 text-sm font-semibold">
+                      <ToolIcon id={tool} size={28} />
                       {t?.name ?? "The Stack"}
                     </div>
                     <p className="mt-2 text-fg-2">{fix}</p>
@@ -224,18 +228,18 @@ export default function Home() {
             <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
               One brand.
               <br />
-              <span className="outline-text">Five pebbles.</span>
+              <span className="outline-text">Five tools.</span>
             </h2>
             <p className="mt-6 max-w-xl text-fg-3 leading-relaxed">
-              Real outputs for a sample coffee brand. Every tool reads the same research, so each pebble makes the
-              next one smarter.
+              Real outputs for a sample coffee brand. Every tool reads the same research, so each tool makes the next
+              one smarter.
             </p>
           </div>
           <Walkthrough />
         </section>
 
-        {/* 02 · How it works */}
-        <section className="border-t border-line px-4 py-24 sm:px-8">
+        {/* 04 · How it works */}
+        <section className="surface-light px-4 py-24 sm:px-8">
           <Eyebrow n="04">How it works</Eyebrow>
           <div className="mt-8 grid gap-12 md:grid-cols-3 md:gap-6">
             {STEPS.map(([title, body, link], i) => (
@@ -254,7 +258,7 @@ export default function Home() {
         </section>
 
         {/* 03 · Ownership */}
-        <section id="own" className="scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2 lg:items-end">
+        <section id="own" className="surface-light scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2 lg:items-end">
           <div>
             <Eyebrow n="05">Built to own</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,7vw,5.5rem)]">
@@ -282,7 +286,7 @@ export default function Home() {
               <TextLink href="#stack">Compare with renting SaaS</TextLink>
             </div>
           </div>
-          <div className="rounded-2xl border border-line-2 bg-ink-1 font-mono text-[13px]">
+          <div className="surface-dark rounded-2xl border border-line-2 font-mono text-[13px] shadow-[0_40px_80px_-40px_rgb(0_0_0/0.5)]">
             <div className="flex items-center gap-2 border-b border-line px-5 py-4">
               <span className="size-2.5 rounded-full bg-fg-3" />
               <span className="size-2.5 rounded-full bg-fg-3" />
@@ -305,11 +309,27 @@ export default function Home() {
         </section>
 
         {/* 04 · Agents */}
-        <section id="agents" className="scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2 lg:items-center">
-          <div aria-hidden className="relative mx-auto aspect-square w-full max-w-md">
-            <div className="pebble absolute left-[8%] top-[30%] w-[58%]" style={{ "--h": 125 } as React.CSSProperties} />
-            <div className="pebble absolute right-[6%] top-[8%] w-[34%]" style={{ "--h": 300, animationDelay: "-4s" } as React.CSSProperties} />
-            <div className="pebble absolute bottom-[6%] right-[14%] w-[26%]" style={{ "--h": 200, animationDelay: "-8s" } as React.CSSProperties} />
+        <section id="agents" className="scroll-mt-14 grid gap-12 overflow-hidden border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-2 lg:items-center">
+          <div aria-hidden className="relative mx-auto aspect-square w-full max-w-[300px] sm:max-w-md">
+            <div className="absolute inset-[10%] rounded-full bg-[radial-gradient(circle,oklch(0.85_0.2_122/0.25),transparent_65%)]" />
+            <div className="absolute inset-[6%] rounded-full border border-dashed border-line-2" />
+            <div className="absolute inset-[26%] rounded-full border border-line" />
+            <div className="absolute inset-0" style={{ animation: "spin 40s linear infinite" }}>
+              {(Object.keys(TOOLS) as ToolId[]).map((tid, i) => {
+                const a = (i / 5) * 2 * Math.PI - Math.PI / 2;
+                return (
+                  <div key={tid} className="absolute -translate-x-1/2 -translate-y-1/2" style={{ left: `${50 + 44 * Math.cos(a)}%`, top: `${50 + 44 * Math.sin(a)}%` }}>
+                    <div className="flex flex-col items-center gap-2" style={{ animation: "spin 40s linear infinite reverse" }}>
+                      <ToolIcon id={tid} size={52} className="bg-ink-1" />
+                      <span className="whitespace-nowrap text-xs text-fg-3">{TOOLS[tid].name}</span>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 rounded-[30%] shadow-[0_0_80px_-10px_var(--signal)]">
+              <ToolIcon id="agent" size={96} />
+            </div>
           </div>
           <div>
             <Eyebrow n="06">Agents · coming soon</Eyebrow>
@@ -319,7 +339,7 @@ export default function Home() {
               do the work.
             </h2>
             <p className="mt-8 max-w-lg text-fg-2 leading-relaxed">
-              Agents sit on top of your pebbles. A Launch agent researches rivals, drafts the campaign, builds the
+              Agents sit on top of your tools. A Launch agent researches rivals, drafts the campaign, builds the
               ads and schedules it all. You decide how much it does alone.
             </p>
             <h3 className="mt-10 font-semibold" style={{ fontStretch: "112%" }}>
@@ -349,7 +369,7 @@ export default function Home() {
               your stuff.
             </h2>
             <p className="mt-8 max-w-lg text-fg-2 leading-relaxed">
-              Your brand, data, model and channels are set up once and shared by every tool. Every pebble you add
+              Your brand, data, model and channels are set up once and shared by every tool. Every tool you add
               already knows your business.
             </p>
           </div>
@@ -367,12 +387,12 @@ export default function Home() {
         </section>
 
         {/* 06 · Stack builder */}
-        <section id="stack" className="scroll-mt-14 border-t border-line px-4 py-24 sm:px-8">
+        <section id="stack" className="surface-light scroll-mt-14 px-4 py-24 sm:px-8">
           <div className="mb-12 flex flex-col justify-between gap-6 lg:flex-row lg:items-end">
             <div>
               <Eyebrow n="08">Build your stack</Eyebrow>
               <h2 className="display mt-6 text-[clamp(2.8rem,8vw,6.5rem)]">
-                More pebbles,
+                More tools,
                 <br />
                 <span className="text-signal-text">less to pay.</span>
               </h2>
@@ -386,7 +406,7 @@ export default function Home() {
         </section>
 
         {/* 08 · FAQ */}
-        <section id="faq" className="scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-[5fr_7fr]">
+        <section id="faq" className="surface-light scroll-mt-14 grid gap-12 border-t border-line px-4 py-24 sm:px-8 lg:grid-cols-[5fr_7fr]">
           <div>
             <Eyebrow n="09">Questions</Eyebrow>
             <h2 className="display mt-6 text-[clamp(2.8rem,6vw,5rem)]">
@@ -415,7 +435,10 @@ export default function Home() {
 
         {/* Closing */}
         <section className="relative overflow-hidden border-t border-line px-4 py-32 sm:px-8">
-          <div aria-hidden className="pebble absolute -bottom-[30%] -right-[10%] w-[70vw] max-w-[820px] opacity-90" style={{ "--h": 122 } as React.CSSProperties} />
+          <div aria-hidden className="aurora">
+            <span className="-bottom-[30%] right-[-5%] size-[700px] opacity-60" style={{ background: "oklch(0.85 0.2 122)" }} />
+            <span className="-bottom-[20%] right-[30%] size-[460px] opacity-40" style={{ background: "oklch(0.65 0.2 290)", animationDelay: "-8s" }} />
+          </div>
           <div className="relative">
             <h2 className="display text-[clamp(3.2rem,12vw,10rem)]">
               Own your
@@ -423,9 +446,9 @@ export default function Home() {
               <span className="text-signal-text">growth.</span>
             </h2>
             <div className="mt-12 flex flex-wrap items-center gap-6">
-              <a href="#stack" className="rounded-xl bg-signal px-6 py-4 text-lg font-semibold text-signal-ink hover:brightness-110">
+              <Link href="/#stack" className="rounded-xl bg-signal px-6 py-4 text-lg font-semibold text-signal-ink hover:brightness-110">
                 Build your stack →
-              </a>
+              </Link>
               <span className="text-sm text-fg-2">14-day free trial · runs on your machine</span>
             </div>
           </div>

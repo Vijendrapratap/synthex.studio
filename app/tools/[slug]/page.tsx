@@ -1,8 +1,10 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { notFound } from "next/navigation";
+import { ToolIcon } from "@/components/tool-icon";
 import { Eyebrow, TextLink } from "@/components/ui";
 import { COPY, MOCKS } from "@/components/walkthrough";
+import { BRAND } from "@/lib/brand";
 import { quote, TOOLS, type ToolId } from "@/lib/stack";
 
 // Same for every tool today. Draft: confirm per tool before launch.
@@ -24,7 +26,7 @@ function getTool(slug: string) {
 
 export async function generateMetadata({ params }: PageProps<"/tools/[slug]">): Promise<Metadata> {
   const t = getTool((await params).slug);
-  return t ? { title: `${t.name} · GrowthPebbles`, description: `${t.line} Pay once, self-hosted, any model.` } : {};
+  return t ? { title: `${t.name} · ${BRAND.name}`, description: `${t.line} Pay once, self-hosted, any model.` } : {};
 }
 
 export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
@@ -37,10 +39,16 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
     <main>
       {/* Hero */}
       <section className="relative overflow-hidden px-4 pt-32 pb-20 sm:px-8 lg:min-h-[85svh] lg:pt-40">
-        <div aria-hidden className="pebble absolute -right-[20%] top-[18%] w-[80vw] max-w-[620px] opacity-30 sm:right-[6%] sm:w-[40vw] sm:opacity-100" style={{ "--h": t.hue } as React.CSSProperties} />
+        <div aria-hidden className="aurora">
+          <span className="right-[-5%] top-[5%] size-[560px]" style={{ background: accent }} />
+          <span className="right-[25%] top-[40%] size-[380px] opacity-30" style={{ background: "oklch(0.85 0.2 122)", animationDelay: "-7s" }} />
+        </div>
+        <div aria-hidden className="absolute right-[12%] top-[32%] hidden rotate-[-8deg] lg:block" style={{ animation: "floaty 7s ease-in-out infinite" }}>
+          <ToolIcon id={t.id} size={220} className="bg-ink-1/60 backdrop-blur-xl" />
+        </div>
         <div className="relative max-w-3xl">
           <Link href="/#tools" className="label hover:text-fg">
-            ← All pebbles
+            ← All tools
           </Link>
           <div className="label mt-10">
             <span style={{ color: accent }}>●</span> {t.stage}
@@ -68,7 +76,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
       </section>
 
       {/* Features */}
-      <section className="border-t border-line px-4 py-24 sm:px-8">
+      <section className="surface-light px-4 py-24 sm:px-8">
         <Eyebrow n="02">What it does</Eyebrow>
         <div className="mt-8 grid gap-12 md:grid-cols-3 md:gap-6">
           {t.features.map(([name, desc], i) => (
@@ -84,7 +92,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
       </section>
 
       {/* Pairs */}
-      <section className="border-t border-line px-4 py-24 sm:px-8">
+      <section className="surface-light border-t border-line px-4 py-24 sm:px-8">
         <Eyebrow n="03">Better together</Eyebrow>
         <h2 className="display mt-6 text-[clamp(2.4rem,6vw,5rem)]">Stack it.</h2>
         <div className="mt-10 grid gap-4 md:grid-cols-2">
@@ -95,9 +103,9 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
               <div key={p} className="flex flex-col justify-between gap-8 rounded-3xl border border-line bg-ink-1 p-7">
                 <div>
                   <div className="flex items-center gap-3">
-                    <span className="pebble w-6" style={{ "--h": t.hue, animation: "none" } as React.CSSProperties} />
+                    <ToolIcon id={t.id} size={36} />
                     <span className="text-fg-3">+</span>
-                    <span className="pebble w-6" style={{ "--h": pair.hue, animation: "none" } as React.CSSProperties} />
+                    <ToolIcon id={p as ToolId} size={36} />
                   </div>
                   <h3 className="display mt-6 text-2xl" style={{ letterSpacing: "-0.02em" }}>
                     {t.name} + {pair.name}
@@ -138,14 +146,14 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
       </section>
 
       {/* Other tools */}
-      <section className="border-t border-line px-4 py-24 sm:px-8">
-        <div className="label">More pebbles</div>
+      <section className="surface-light px-4 py-24 sm:px-8">
+        <div className="label">More tools</div>
         <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(TOOLS) as ToolId[])
             .filter((id) => id !== t.id)
             .map((id) => (
               <Link key={id} href={`/tools/${id}`} className="group flex items-center gap-4 rounded-2xl border border-line bg-ink-1 p-5 transition hover:border-line-2">
-                <span className="pebble w-8 shrink-0" style={{ "--h": TOOLS[id].hue, animation: "none" } as React.CSSProperties} />
+                <ToolIcon id={id} size={36} />
                 <span className="flex-1 font-semibold" style={{ fontStretch: "112%" }}>
                   {TOOLS[id].name}
                 </span>

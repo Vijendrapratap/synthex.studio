@@ -1,7 +1,9 @@
 @import "tailwindcss";
 
-/* Dark is the default; [data-theme="light"] flips the ink scale. */
-:root {
+/* Two surfaces. Dark is the page default; wrap a section in .surface-light
+   (or a card in .surface-dark) and every token flips inside it. */
+:root,
+.surface-dark {
   --ink-0: #070707;
   --ink-1: #0c0c0c;
   --ink-2: #131313;
@@ -14,21 +16,29 @@
   --signal: #c6f135;
   --signal-ink: #0e1400;
   --signal-text: #c6f135;
+  --icon-l: 0.82;
   color-scheme: dark;
 }
 
-:root[data-theme="light"] {
-  --ink-0: #f4f3ef;
-  --ink-1: #eeede8;
-  --ink-2: #e7e5df;
-  --ink-3: #dddbd4;
-  --fg: #1c1b17;
-  --fg-2: #4b4a45;
-  --fg-3: #75736c;
-  --line: #16150f17;
-  --line-2: #16150f2e;
-  --signal-text: #4f6e00;
+.surface-light {
+  --ink-0: #f5f4f0;
+  --ink-1: #ffffff;
+  --ink-2: #eeece6;
+  --ink-3: #e4e2db;
+  --fg: #15140f;
+  --fg-2: #4a4944;
+  --fg-3: #7a7871;
+  --line: #15140f14;
+  --line-2: #15140f26;
+  --signal-text: #4a6800;
+  --icon-l: 0.52;
   color-scheme: light;
+}
+
+.surface-dark,
+.surface-light {
+  background: var(--ink-0);
+  color: var(--fg);
 }
 
 @theme inline {
@@ -79,29 +89,31 @@ body {
   color: var(--fg-3);
 }
 
-/* The pebble: a slowly morphing blob tinted by --h */
-.pebble {
-  --h: 120;
-  aspect-ratio: 1.12;
-  border-radius: 63% 37% 56% 44% / 52% 61% 39% 48%;
-  background:
-    radial-gradient(circle at 30% 25%, oklch(0.97 0.05 var(--h) / 0.95), transparent 32%),
-    radial-gradient(circle at 70% 80%, oklch(0.35 0.15 var(--h)), transparent 60%),
-    oklch(0.72 0.19 var(--h));
-  box-shadow: 0 40px 120px -20px oklch(0.72 0.19 var(--h) / 0.45);
-  animation: morph 12s ease-in-out infinite;
-  transition: --h 1.2s, background 1.2s, box-shadow 1.2s;
+/* Soft moving glow: absolutely positioned blurred orbs (colors set inline) */
+.aurora {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
+.aurora > span {
+  position: absolute;
+  border-radius: 9999px;
+  filter: blur(80px);
+  opacity: 0.5;
+  animation: aurora 20s ease-in-out infinite alternate;
+  transition: background 1.2s;
+}
+@keyframes aurora {
+  0% { transform: translate(0, 0) scale(1); }
+  50% { transform: translate(8%, -6%) scale(1.15); }
+  100% { transform: translate(-6%, 6%) scale(0.92); }
 }
 
-@property --h {
-  syntax: "<number>";
-  inherits: true;
-  initial-value: 120;
-}
-
-@keyframes morph {
-  0%, 100% { border-radius: 63% 37% 56% 44% / 52% 61% 39% 48%; transform: rotate(0deg); }
-  50% { border-radius: 46% 54% 38% 62% / 60% 42% 58% 40%; transform: rotate(8deg); }
+/* Faint grid texture for light sections */
+.grid-bg {
+  background-image: linear-gradient(var(--line) 1px, transparent 1px), linear-gradient(90deg, var(--line) 1px, transparent 1px);
+  background-size: 56px 56px;
 }
 
 @keyframes rise {

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { ToolIcon } from "@/components/tool-icon";
 import { quote, STACK_PRICE, TOOLS, type ToolId } from "@/lib/stack";
 
 const ALL = Object.keys(TOOLS) as ToolId[];
@@ -59,12 +60,11 @@ export function StackBuilder() {
                 key={id}
                 onClick={() => toggle(id)}
                 aria-pressed={on}
-                className={`flex items-start gap-4 rounded-2xl border p-5 text-left transition duration-300 ease-out-expo ${on ? "border-signal bg-ink-2" : "border-line bg-ink-1 hover:border-line-2"}`}
+                className={`flex items-start gap-4 rounded-2xl border p-5 text-left transition duration-300 ease-out-expo ${on ? "border-fg bg-ink-1 shadow-[0_20px_50px_-30px_rgb(0_0_0/0.35)]" : "border-line bg-ink-1/60 hover:border-line-2"}`}
               >
-                <span
-                  className={`pebble mt-1 w-9 shrink-0 transition ${on ? "scale-100" : "scale-75 opacity-40 grayscale"}`}
-                  style={{ "--h": t.hue, animationDuration: "8s" } as React.CSSProperties}
-                />
+                <span className={`transition ${on ? "" : "opacity-50 grayscale"}`}>
+                  <ToolIcon id={id} size={44} />
+                </span>
                 <span className="flex-1">
                   <span className="flex items-baseline justify-between gap-2">
                     <span className="font-semibold" style={{ fontStretch: "112%" }}>
@@ -85,7 +85,7 @@ export function StackBuilder() {
         <div className="mt-4 hidden min-h-12 flex-col-reverse gap-1 lg:flex">
           {picked.map((id) => (
             <div key={id} className="rise flex items-center gap-2 text-sm">
-              <span className="pebble w-4" style={{ "--h": TOOLS[id].hue, animation: "none" } as React.CSSProperties} />
+              <ToolIcon id={id} size={22} />
               {TOOLS[id].name}
             </div>
           ))}
