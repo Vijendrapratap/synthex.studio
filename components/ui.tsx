@@ -25,7 +25,7 @@ const FOOTER_COLS: [string, string[][]][] = [
   ],
 ];
 
-const ASK_PROMPT = `What is ${BRAND.name} (${BRAND.domain})? Summarize its pay-once, self-hosted AI marketing tools and who they're for.`;
+const ASK_PROMPT = `What is ${BRAND.name} (${BRAND.expansion})? Summarize its pay-once, self-hosted AI marketing tools and who they're for.`;
 const ASK_AI = [
   ["ChatGPT", "https://chatgpt.com/?q="],
   ["Claude", "https://claude.ai/new?q="],
@@ -41,6 +41,19 @@ function Logo() {
       </svg>
       {BRAND.name.toUpperCase()}
     </Link>
+  );
+}
+
+// The acronym spelled out, with each word's initial lit up (skips "&").
+function Expansion() {
+  return (
+    <p className="mt-4 text-center font-mono text-[11px] uppercase tracking-[0.2em] text-fg-3 sm:text-xs">
+      {BRAND.expansion.split(" ").map((w, i) => (
+        <span key={i}>
+          {w === "&" ? w : <><span className="text-signal-text">{w[0]}</span>{w.slice(1)}</>}{" "}
+        </span>
+      ))}
+    </p>
   );
 }
 
@@ -71,8 +84,9 @@ export function Header() {
               {label}
             </Link>
           ))}
-          <Link href="/#stack" className="rounded-lg bg-signal px-3 py-2 font-semibold text-signal-ink hover:brightness-110">
-            Build your stack
+          <Link href="/#stack" className="whitespace-nowrap rounded-lg bg-signal px-3 py-2 font-semibold text-signal-ink hover:brightness-110">
+            <span className="sm:hidden">Pricing</span>
+            <span className="max-sm:hidden">Build your stack</span>
           </Link>
         </div>
       </nav>
@@ -99,7 +113,7 @@ export function Footer() {
       <div className="grid gap-10 py-10 sm:grid-cols-[2fr_1fr_1fr]">
         <div className="flex flex-col items-start gap-4">
           <Logo />
-          <p className="max-w-xs text-sm text-fg-3">{BRAND.tagline}. Pay once, run it on your servers, use any model.</p>
+          <p className="max-w-xs text-sm text-fg-3">{BRAND.expansion}. Pay once, run it on your servers, use any model.</p>
         </div>
         {FOOTER_COLS.map(([title, links]) => (
           <div key={title}>
@@ -134,6 +148,7 @@ export function Footer() {
           {BRAND.name.toUpperCase()}
         </text>
       </svg>
+      <Expansion />
     </footer>
   );
 }
