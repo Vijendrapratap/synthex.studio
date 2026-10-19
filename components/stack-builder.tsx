@@ -40,18 +40,18 @@ export function StackBuilder() {
   return (
     <div className="grid gap-4 lg:grid-cols-[1fr_380px]">
       <div>
-        <div className="mb-4 flex flex-wrap gap-2">
+        <div className="mb-6 flex flex-wrap gap-3">
           {KITS.map((k) => (
             <button
               key={k.name}
               onClick={() => update(k.tools)}
-              className="rounded-full border border-line-2 px-4 py-2 text-sm text-fg-2 transition hover:border-fg-3 hover:text-fg"
+              className="neu lift rounded-full px-4 py-2 text-sm text-fg-2 hover:text-fg active:neu-in"
             >
               {k.name}
             </button>
           ))}
         </div>
-        <div className="grid gap-3 sm:grid-cols-2">
+        <div className="grid gap-4 sm:grid-cols-2">
           {ALL.map((id) => {
             const t = TOOLS[id];
             const on = picked.includes(id);
@@ -60,7 +60,7 @@ export function StackBuilder() {
                 key={id}
                 onClick={() => toggle(id)}
                 aria-pressed={on}
-                className={`flex items-start gap-4 rounded-2xl border p-5 text-left transition duration-300 ease-out-expo ${on ? "border-fg bg-ink-1 shadow-[0_20px_50px_-30px_rgb(0_0_0/0.35)]" : "border-line bg-ink-1/60 hover:border-line-2"}`}
+                className={`spot relative flex items-start gap-4 rounded-2xl p-5 text-left transition-[box-shadow,transform] duration-500 ease-out-expo active:scale-[0.99] ${on ? "neu-in" : "neu hover:-translate-y-0.5"}`}
               >
                 <span className={`transition ${on ? "" : "opacity-50 grayscale"}`}>
                   <ToolIcon id={id} size={44} />
@@ -74,13 +74,16 @@ export function StackBuilder() {
                   </span>
                   <span className="mt-1 block text-sm leading-relaxed text-fg-3">{t.line}</span>
                 </span>
+                <span aria-hidden className={`absolute -right-2 -top-2 grid size-6 place-items-center rounded-full bg-signal text-xs font-bold text-signal-ink shadow-[0_4px_12px_-2px_rgb(198_241_53/0.7)] transition duration-300 ease-[var(--ease-spring)] ${on ? "scale-100" : "scale-0"}`}>
+                  ✓
+                </span>
               </button>
             );
           })}
         </div>
       </div>
 
-      <aside className="sticky bottom-3 h-fit rounded-2xl border border-line-2 bg-ink-1/95 p-5 backdrop-blur lg:top-24">
+      <aside className="neu sticky bottom-3 h-fit rounded-3xl p-6 lg:top-24">
         <div className="label">Your stack · {picked.length} of {ALL.length}</div>
         <div className="mt-4 hidden min-h-12 flex-col-reverse gap-1 lg:flex">
           {picked.map((id) => (
@@ -90,7 +93,7 @@ export function StackBuilder() {
             </div>
           ))}
         </div>
-        <dl className="mt-4 space-y-1.5 border-t border-line pt-4 font-mono text-sm">
+        <dl className="neu-in mt-5 space-y-1.5 rounded-2xl p-4 font-mono text-sm">
           <div className="flex justify-between text-fg-3">
             <dt>List</dt>
             <dd className={q.savings ? "line-through" : ""}>{usd(q.list)}</dd>
@@ -124,7 +127,7 @@ export function StackBuilder() {
 
         <button
           disabled={!picked.length}
-          className="mt-4 w-full rounded-xl bg-signal py-3 font-semibold text-signal-ink transition hover:brightness-110 disabled:opacity-40"
+          className="btn mt-4 w-full rounded-xl py-3.5 disabled:opacity-40"
         >
           Own this stack →
         </button>

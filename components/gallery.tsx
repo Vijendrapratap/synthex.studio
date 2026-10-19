@@ -236,13 +236,15 @@ export function Gallery() {
         return (
           <Link
             key={p.title}
-            href={p.tool === "agents" ? "/#agents" : `/tools/${p.tool}`}
-            className={`reveal group relative overflow-hidden rounded-2xl border border-white/10 bg-[#0c0c0e] ${p.span}`}
+            href={p.tool === "agents" ? "/agents" : `/tools/${p.tool}`}
+            data-spot
+            className={`reveal group relative overflow-hidden rounded-3xl border border-white/10 bg-[#0c0c0e] shadow-[inset_0_1px_0_rgb(255_255_255/0.08)] transition duration-500 ease-out-expo hover:border-white/25 hover:shadow-[0_30px_80px_-30px_rgb(198_241_53/0.25)] ${p.span}`}
           >
             <div className="absolute inset-0 transition duration-700 ease-out-expo group-hover:scale-[1.04]">{p.scene}</div>
             <div className="absolute inset-x-0 bottom-0 h-2/3 bg-gradient-to-t from-black/90 via-black/40 to-transparent" />
+            <div aria-hidden className="spot pointer-events-none absolute inset-0 opacity-0 transition duration-500 group-hover:opacity-100" />
             <div className="absolute left-4 top-4 flex gap-2">
-              <span className="rounded-md bg-black/70 px-2 py-1 font-mono text-[11px] tracking-[0.14em] text-white/90">{name.toUpperCase()}</span>
+              <span className="rounded-lg border border-white/10 bg-black/40 px-2.5 py-1 font-mono text-[11px] tracking-[0.14em] text-white/90 backdrop-blur-md">{name.toUpperCase()}</span>
               {p.badge && <span className="rounded-md bg-[#c6f135] px-2 py-1 font-mono text-[11px] tracking-[0.14em] text-[#0e1400]">{p.badge.toUpperCase()}</span>}
             </div>
             <div className="absolute inset-x-5 bottom-5">

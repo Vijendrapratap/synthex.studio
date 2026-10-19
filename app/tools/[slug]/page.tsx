@@ -56,7 +56,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
           <h1 className="display mt-6 text-[clamp(3.2rem,10vw,8.5rem)]">{t.name}</h1>
           <p className="mt-8 max-w-xl text-xl leading-relaxed text-fg-2">{t.line}</p>
           <div className="mt-10 flex flex-wrap items-center gap-4">
-            <Link href={`/?stack=${t.id}#stack`} className="rounded-xl bg-signal px-6 py-4 text-lg font-semibold text-signal-ink hover:brightness-110">
+            <Link href={`/pricing?stack=${t.id}#stack`} className="btn rounded-xl px-6 py-4 text-lg">
               Own it · ${t.price}
             </Link>
             <span className="text-sm text-fg-3">One-time · 14-day free trial · cheaper in a combo</span>
@@ -80,7 +80,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
         <Eyebrow n="02">What it does</Eyebrow>
         <div className="mt-8 grid gap-12 md:grid-cols-3 md:gap-6">
           {t.features.map(([name, desc], i) => (
-            <div key={name} className="border-t border-line pt-6">
+            <div key={name} className="neu spot lift reveal rounded-3xl p-7">
               <div className="display outline-text text-8xl">0{i + 1}</div>
               <h3 className="display mt-8 text-3xl" style={{ letterSpacing: "-0.02em" }}>
                 {name}
@@ -95,12 +95,12 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
       <section className="surface-light border-t border-line px-4 py-24 sm:px-8">
         <Eyebrow n="03">Better together</Eyebrow>
         <h2 className="display mt-6 text-[clamp(2.4rem,6vw,5rem)]">Stack it.</h2>
-        <div className="mt-10 grid gap-4 md:grid-cols-2">
+        <div className="mt-10 grid gap-6 md:grid-cols-2">
           {t.pairs.map((p) => {
             const pair = TOOLS[p as ToolId];
             const q = quote([t.id, p]);
             return (
-              <div key={p} className="flex flex-col justify-between gap-8 rounded-3xl border border-line bg-ink-1 p-7">
+              <div key={p} className="neu spot lift reveal flex flex-col justify-between gap-8 rounded-3xl p-7">
                 <div>
                   <div className="flex items-center gap-3">
                     <ToolIcon id={t.id} size={36} />
@@ -117,7 +117,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
                     <span className="text-fg-3 line-through">${q.list}</span> <span className="text-lg text-fg">${q.total}</span>{" "}
                     <span className="text-signal-text">−{Math.round(q.pct * 100)}%</span>
                   </div>
-                  <TextLink href={`/?stack=${t.id},${p}#stack`}>Build this combo</TextLink>
+                  <TextLink href={`/pricing?stack=${t.id},${p}#stack`}>Build this combo</TextLink>
                 </div>
               </div>
             );
@@ -135,7 +135,7 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
             <span className="text-signal-text">fully.</span>
           </h2>
         </div>
-        <dl className="rounded-3xl border border-line">
+        <dl className="glass rounded-3xl">
           {SPECS.map(([k, v]) => (
             <div key={k} className="grid gap-1 border-b border-line px-6 py-5 last:border-0 sm:grid-cols-[160px_1fr]">
               <dt className="label !text-fg-3">{k}</dt>
@@ -148,11 +148,11 @@ export default async function ToolPage({ params }: PageProps<"/tools/[slug]">) {
       {/* Other tools */}
       <section className="surface-light px-4 py-24 sm:px-8">
         <div className="label">More tools</div>
-        <div className="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
+        <div className="mt-6 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
           {(Object.keys(TOOLS) as ToolId[])
             .filter((id) => id !== t.id)
             .map((id) => (
-              <Link key={id} href={`/tools/${id}`} className="group flex items-center gap-4 rounded-2xl border border-line bg-ink-1 p-5 transition hover:border-line-2">
+              <Link key={id} href={`/tools/${id}`} className="neu spot lift group flex items-center gap-4 rounded-2xl p-5">
                 <ToolIcon id={id} size={36} />
                 <span className="flex-1 font-semibold" style={{ fontStretch: "112%" }}>
                   {TOOLS[id].name}

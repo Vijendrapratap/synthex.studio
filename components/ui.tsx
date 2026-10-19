@@ -4,22 +4,16 @@ import { TOOLS } from "@/lib/stack";
 
 // Shared site chrome and small text primitives.
 
-const NAV = [
-  ["Tools", "/#tools"],
-  ["Demo", "/#demo"],
-  ["Own it", "/#own"],
-  ["Agents", "/#agents"],
-  ["Pricing", "/#stack"],
-];
 
 const FOOTER_COLS: [string, string[][]][] = [
   ["Tools", Object.entries(TOOLS).map(([id, t]) => [t.name, `/tools/${id}`])],
   [
     "Site",
     [
-      ["Pricing", "/#stack"],
-      ["Own it", "/#own"],
-      ["Agents", "/#agents"],
+      ["All tools", "/tools"],
+      ["Pricing", "/pricing"],
+      ["Ownership", "/ownership"],
+      ["Agents", "/agents"],
       ["FAQ", "/#faq"],
     ],
   ],
@@ -32,7 +26,7 @@ const ASK_AI = [
   ["Perplexity", "https://www.perplexity.ai/search?q="],
 ];
 
-function Logo() {
+export function Logo() {
   return (
     <Link href="/" className="flex items-center gap-2.5 font-extrabold tracking-tight" style={{ fontStretch: "125%" }}>
       <svg width="24" height="24" viewBox="0 0 24 24" aria-hidden>
@@ -57,6 +51,26 @@ function Expansion() {
   );
 }
 
+export function PageHero({ eyebrow, title, accent, children }: { eyebrow: string; title: string; accent: string; children?: React.ReactNode }) {
+  return (
+    <section className="relative overflow-hidden px-4 pt-36 pb-20 sm:px-8 lg:pt-44">
+      <div aria-hidden className="aurora">
+        <span className="right-[-8%] top-[-20%] size-[560px]" style={{ background: "oklch(0.85 0.2 122)" }} />
+        <span className="left-[30%] top-[10%] size-[420px] opacity-30" style={{ background: "oklch(0.62 0.2 290)", animationDelay: "-9s" }} />
+      </div>
+      <div className="relative max-w-4xl">
+        <div className="label">{eyebrow}</div>
+        <h1 className="display rise mt-6 text-[clamp(3rem,8vw,7rem)]">
+          {title}
+          <br />
+          <span className="text-signal-text">{accent}</span>
+        </h1>
+        {children && <div className="rise mt-8 max-w-2xl text-lg leading-relaxed text-fg-2 [animation-delay:120ms]">{children}</div>}
+      </div>
+    </section>
+  );
+}
+
 export function Eyebrow({ n, children }: { n: string; children: string }) {
   return (
     <div className="label">
@@ -73,27 +87,6 @@ export function TextLink({ href, children }: { href: string; children: string })
   );
 }
 
-export function Header() {
-  return (
-    <header className="surface-dark fixed inset-x-0 top-0 z-50 border-b border-line !bg-[#070707]/90 backdrop-blur-md">
-      <nav className="flex h-14 items-center justify-between px-4 sm:px-8">
-        <Logo />
-        <div className="flex items-center gap-6 text-sm text-fg-2">
-          {NAV.map(([label, href]) => (
-            <Link key={href} href={href} className="hidden hover:text-fg md:block">
-              {label}
-            </Link>
-          ))}
-          <Link href="/#stack" className="whitespace-nowrap rounded-lg bg-signal px-3 py-2 font-semibold text-signal-ink hover:brightness-110">
-            <span className="sm:hidden">Pricing</span>
-            <span className="max-sm:hidden">Build your stack</span>
-          </Link>
-        </div>
-      </nav>
-    </header>
-  );
-}
-
 export function Footer() {
   return (
     <footer id="drops" className="border-t border-line px-4 py-12 sm:px-8">
@@ -104,9 +97,9 @@ export function Footer() {
           </div>
           <p className="mt-3 max-w-md text-sm text-fg-2">New tools, new agents and what owners built with them. One email a month.</p>
         </div>
-        <form className="flex w-full max-w-md gap-2 rounded-xl border border-line-2 p-1.5">
+        <form className="neu-in flex w-full max-w-md gap-2 rounded-xl p-1.5">
           <input type="email" required placeholder="you@company.com" aria-label="Email" className="min-w-0 flex-1 bg-transparent px-3 text-sm outline-none placeholder:text-fg-3" />
-          <button className="rounded-lg bg-signal px-4 py-2 text-sm font-semibold text-signal-ink">Sign up →</button>
+          <button className="btn rounded-lg px-4 py-2 text-sm">Sign up →</button>
         </form>
       </div>
 

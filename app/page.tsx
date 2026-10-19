@@ -109,7 +109,7 @@ export default function Home() {
         <div aria-hidden className="overflow-hidden border-y border-line bg-ink-1 py-4 [mask-image:linear-gradient(90deg,transparent,#000_8%,#000_92%,transparent)]">
           <div className="flex w-max gap-3 hover:[animation-play-state:paused]" style={{ animation: "marquee 60s linear infinite" }}>
             {[...TICKER, ...TICKER].map(([tool, text], i) => (
-              <span key={i} className="flex items-center gap-2 whitespace-nowrap rounded-full border border-line-2 px-4 py-1.5 text-sm text-fg-2">
+              <span key={i} className="glass flex items-center gap-2 whitespace-nowrap rounded-full px-4 py-1.5 text-sm text-fg-2">
                 <span className="size-2 rounded-full" style={{ background: `oklch(0.75 0.16 ${TOOLS[tool].hue})` }} />
                 {text}
               </span>
@@ -123,8 +123,8 @@ export default function Home() {
           {PROOF.map(([big, small, tag, hue, rot]) => (
             <div
               key={big}
-              className="reveal flex aspect-[4/5] w-full max-w-[300px] flex-col justify-between rounded-[32px] border border-line p-6 transition duration-500 ease-out-expo hover:!rotate-0 hover:-translate-y-2"
-              style={{ rotate: `${rot}deg`, background: `color-mix(in oklch, var(--ink-1) 80%, oklch(0.8 0.14 ${hue}))`, boxShadow: "0 30px 60px -30px rgb(0 0 0 / 0.25)" }}
+              className="glass reveal flex aspect-[4/5] w-full max-w-[300px] flex-col justify-between rounded-[32px] p-6 transition duration-700 ease-[var(--ease-spring)] hover:!rotate-0 hover:-translate-y-3"
+              style={{ rotate: `${rot}deg`, backgroundColor: `color-mix(in oklch, var(--glass-bg) 70%, oklch(0.85 0.12 ${hue} / 0.6))` }}
             >
               <span className="w-fit rounded-full bg-ink-1/70 px-3 py-1 text-xs text-fg-2">{tag}</span>
               <div>
@@ -138,7 +138,7 @@ export default function Home() {
         </section>
 
         {/* Manifesto: words ink in as you scroll */}
-        <section className="mx-2 rounded-[40px] border border-line bg-ink-1 px-4 py-24 sm:mx-4 sm:px-8 lg:py-32">
+        <section className="neu mx-2 rounded-[40px] px-4 py-24 sm:mx-4 sm:px-8 lg:py-32">
           <div className="grid gap-10 lg:grid-cols-[5fr_7fr]">
             <h2 className="display text-[clamp(2.4rem,5vw,4.5rem)] lg:sticky lg:top-28 lg:self-start">
               Stop renting your marketing brain.
@@ -193,15 +193,15 @@ export default function Home() {
               each one off it.
             </p>
           </div>
-          <div className="grid gap-3 md:grid-cols-2 lg:grid-cols-3">
+          <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
             {PAINS.map(([quote, tool, fix]) => {
               const t = tool === "stack" ? null : TOOLS[tool];
               const hue = t?.hue ?? 122;
               return (
                 <Link
                   key={quote}
-                  href={t ? `/tools/${tool}` : "/#stack"}
-                  className="reveal group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-3xl border border-line bg-ink-1 p-7 shadow-[0_1px_2px_rgb(0_0_0/0.04)] transition duration-500 ease-out-expo hover:-translate-y-1 hover:border-line-2 hover:shadow-[0_30px_60px_-30px_rgb(0_0_0/0.25)]"
+                  href={t ? `/tools/${tool}` : "/pricing"}
+                  className="neu spot lift reveal group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-3xl p-7"
                 >
                   <div aria-hidden className="absolute inset-0 opacity-0 transition duration-700 group-hover:opacity-100" style={{ background: `radial-gradient(circle at 100% 0%, oklch(0.85 0.12 ${hue} / 0.35), transparent 55%)` }} />
                   <p className="relative text-[1.6rem] font-semibold leading-tight tracking-tight text-fg" style={{ fontStretch: "105%" }}>
@@ -243,14 +243,14 @@ export default function Home() {
           <Eyebrow n="04">How it works</Eyebrow>
           <div className="mt-8 grid gap-12 md:grid-cols-3 md:gap-6">
             {STEPS.map(([title, body, link], i) => (
-              <div key={title} className="border-t border-line pt-6">
+              <div key={title} className="neu spot lift reveal rounded-3xl p-7">
                 <div className="display outline-text text-8xl">0{i + 1}</div>
                 <h3 className="display mt-8 text-3xl" style={{ letterSpacing: "-0.02em" }}>
                   {title}
                 </h3>
                 <p className="mt-4 max-w-sm text-fg-3 leading-relaxed">{body}</p>
                 <div className="mt-6">
-                  <TextLink href="#own">{link}</TextLink>
+                  <TextLink href="/ownership">{link}</TextLink>
                 </div>
               </div>
             ))}
@@ -283,7 +283,7 @@ export default function Home() {
               </p>
             </div>
             <div className="mt-8">
-              <TextLink href="#stack">Compare with renting SaaS</TextLink>
+              <TextLink href="/ownership">Compare with renting SaaS</TextLink>
             </div>
           </div>
           <div className="surface-dark rounded-2xl border border-line-2 font-mono text-[13px] shadow-[0_40px_80px_-40px_rgb(0_0_0/0.5)]">
@@ -345,7 +345,7 @@ export default function Home() {
             <h3 className="mt-10 font-semibold" style={{ fontStretch: "112%" }}>
               Autonomy you control
             </h3>
-            <div className="mt-4 grid grid-cols-2 overflow-hidden rounded-xl border border-line">
+            <div className="glass mt-4 grid grid-cols-2 overflow-hidden rounded-2xl">
               {AUTONOMY.map(([t, d], i) => (
                 <div key={t} className={`p-4 ${i % 2 ? "border-l border-line" : ""} ${i > 1 ? "border-t border-line" : ""}`}>
                   <div className="text-sm font-semibold">{t}</div>
@@ -354,7 +354,7 @@ export default function Home() {
               ))}
             </div>
             <div className="mt-8">
-              <TextLink href="#drops">Join the agents waitlist</TextLink>
+              <TextLink href="/agents">Meet the agents</TextLink>
             </div>
           </div>
         </section>
@@ -373,9 +373,9 @@ export default function Home() {
               already knows your business.
             </p>
           </div>
-          <div className="grid overflow-hidden rounded-2xl border border-line sm:grid-cols-2">
+          <div className="grid gap-4 sm:grid-cols-2">
             {BYO.map(([t, d], i) => (
-              <div key={t} className={`p-7 ${i % 2 ? "sm:border-l" : ""} ${i ? "border-t sm:border-t-0" : ""} ${i > 1 ? "sm:border-t" : ""} border-line`}>
+              <div key={t} className="glass spot lift reveal rounded-3xl p-7">
                 <div className="font-mono text-2xl text-signal-text">{["Aa", "▤", "◎", "⇄"][i]}</div>
                 <h3 className="display mt-8 text-xl" style={{ letterSpacing: "-0.01em" }}>
                   {t}
@@ -420,7 +420,7 @@ export default function Home() {
               <div key={group} className="mb-10">
                 <div className="label mb-2">{group}</div>
                 {items.map(([q, a]) => (
-                  <details key={q} name="faq" className="group border-b border-line py-5">
+                  <details key={q} name="faq" className="neu group mb-3 rounded-2xl px-6 py-5 transition-shadow duration-500 open:neu-in">
                     <summary className="flex cursor-pointer list-none items-center justify-between gap-6 text-lg font-medium">
                       {q}
                       <span className="text-2xl text-fg-3 transition group-open:rotate-45">+</span>
@@ -446,7 +446,7 @@ export default function Home() {
               <span className="text-signal-text">growth.</span>
             </h2>
             <div className="mt-12 flex flex-wrap items-center gap-6">
-              <Link href="/#stack" className="rounded-xl bg-signal px-6 py-4 text-lg font-semibold text-signal-ink hover:brightness-110">
+              <Link href="/pricing" className="btn rounded-xl px-6 py-4 text-lg">
                 Build your stack →
               </Link>
               <span className="text-sm text-fg-2">14-day free trial · runs on your machine</span>

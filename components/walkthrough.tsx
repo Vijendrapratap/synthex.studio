@@ -14,7 +14,7 @@ function Chip({ tone = "fg", children }: { tone?: "good" | "bad" | "mid" | "fg";
 }
 
 function Card({ children, className = "" }: { children: React.ReactNode; className?: string }) {
-  return <div className={`reveal rounded-3xl border border-line bg-ink-1 p-5 shadow-[0_30px_80px_-40px_rgb(0_0_0/0.6)] ${className}`}>{children}</div>;
+  return <div className={`glass reveal rounded-3xl p-5 ${className}`}>{children}</div>;
 }
 
 const COMPETITORS = [
@@ -180,7 +180,7 @@ export function Walkthrough() {
               <p className="mt-6 max-w-md text-lg leading-relaxed text-fg-2">{body}</p>
               <div className="mt-8 flex flex-wrap gap-6">
                 <TextLink href={`/tools/${id}`}>{`Explore ${t.name}`}</TextLink>
-                <TextLink href={`/?stack=${id}#stack`}>{`Add to stack · $${t.price}`}</TextLink>
+                <TextLink href={`/pricing?stack=${id}#stack`}>{`Add to stack · $${t.price}`}</TextLink>
               </div>
             </div>
             <div className="mx-auto w-full max-w-xl">{MOCKS[id]}</div>

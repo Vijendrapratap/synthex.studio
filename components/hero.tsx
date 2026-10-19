@@ -66,7 +66,7 @@ export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
                   role="tab"
                   aria-selected={mode === m}
                   onClick={() => setMode(m)}
-                  className={`rounded-t-xl px-4 py-2 transition ${mode === m ? "bg-ink-2 text-fg" : "text-fg-3 hover:text-fg-2"}`}
+                  className={`rounded-t-xl px-4 py-2 transition ${mode === m ? "glass !border-b-0 text-fg" : "text-fg-3 hover:text-fg-2"}`}
                 >
                   {m === "brand" ? (
                     <>
@@ -78,7 +78,7 @@ export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
                 </button>
               ))}
             </div>
-            <form action="#demo" className={`flex items-center gap-3 rounded-2xl bg-ink-2 p-2 pl-4 ${mode === "brand" ? "rounded-tl-none" : ""}`}>
+            <form action="#demo" className={`glass flex items-center gap-3 rounded-2xl p-2 pl-4 ${mode === "brand" ? "rounded-tl-none" : ""}`}>
               <span className="font-mono text-signal-text">{mode === "brand" ? "◎" : "/"}</span>
               <input
                 key={mode === "brand" ? "brand" : id}
@@ -86,7 +86,7 @@ export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
                 placeholder={mode === "brand" ? "yourbrand.com" : PROMPTS[id]}
                 className="rise min-w-0 flex-1 bg-transparent py-2 text-fg outline-none placeholder:text-fg-3"
               />
-              <button className="rounded-xl bg-signal px-4 py-2.5 font-semibold text-signal-ink transition hover:brightness-110">
+              <button className="btn rounded-xl px-4 py-2.5">
                 {mode === "brand" ? "Scan ↵" : "Try it ↵"}
               </button>
             </form>
@@ -94,8 +94,8 @@ export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
         </div>
 
         {/* Product window: the active tool's real output */}
-        <div aria-hidden className="relative hidden lg:block">
-          <div className="overflow-hidden rounded-[22px] border border-line-2 bg-ink-1/85 shadow-[0_40px_120px_-30px_rgb(0_0_0/0.8)] backdrop-blur-xl">
+        <div aria-hidden className="group/win relative hidden [perspective:1800px] lg:block">
+          <div className="glass overflow-hidden rounded-[24px] transition-transform duration-1000 ease-out-expo [transform:rotateY(-7deg)_rotateX(4deg)] group-hover/win:[transform:none]">
             <div className="flex items-center gap-2 border-b border-line px-4 py-3">
               <span className="size-2.5 rounded-full bg-fg-3/50" />
               <span className="size-2.5 rounded-full bg-fg-3/50" />
@@ -136,7 +136,7 @@ export function Hero({ mocks }: { mocks: Record<ToolId, React.ReactNode> }) {
             return (
               <div key={tid} className={`absolute ${pos}`} style={{ animation: `floaty ${5 + n * 0.6}s ease-in-out ${-n}s infinite` }}>
                 <div
-                  className={`flex items-center gap-3 rounded-2xl border bg-ink-1/90 px-3.5 py-2.5 backdrop-blur-md transition duration-700 ease-out-expo ${on ? "scale-105 border-signal opacity-100 shadow-[0_20px_60px_-20px_var(--signal)]" : "scale-95 border-line-2 opacity-70"}`}
+                  className={`glass flex items-center gap-3 rounded-2xl px-3.5 py-2.5 transition duration-700 ease-out-expo ${on ? "scale-105 !border-signal opacity-100 shadow-[0_20px_60px_-20px_var(--signal)]" : "scale-95 opacity-75"}`}
                 >
                   <ToolIcon id={tid} size={32} />
                   <span>

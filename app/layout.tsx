@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { Archivo, JetBrains_Mono } from "next/font/google";
-import { Footer, Header } from "@/components/ui";
+import { Header } from "@/components/nav";
+import { Spotlight } from "@/components/spotlight";
+import { Footer } from "@/components/ui";
 import { BRAND } from "@/lib/brand";
 import "./globals.css";
 
@@ -29,6 +31,7 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
         <Header />
         {children}
         <Footer />
+        <Spotlight />
       </body>
     </html>
   );
